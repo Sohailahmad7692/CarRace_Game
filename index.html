@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            CarClash
+        </title>
+    </head>
+    <body>
+        <style>
+            *{margin: 0;padding: 0;}
+            .gameArea{
+                background: url('./playground.jpg');
+                background-attachment: fixed;
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+            .hide{
+                display: none;
+            }
+            .carDesign{
+                height: 50px;
+                width: 70px;
+                top: 200px;
+                left: 40px;
+                background-color: red;
+                background: url('./car7.png');
+                background-repeat: no-repeat;
+                background-size: cover;
+                /* background-attachment: fixed; */
+                /* background-position: center; */
+
+                position:absolute;
+            }
+            .enemyCar{
+                height: 50px;
+                width: 70px;
+                top: 200px;
+                left: 40px;
+                background-color: pink;
+                background: url('./car5.jpg');
+                background-repeat: no-repeat;
+                background-size: cover;
+                /* background-attachment: fixed; */
+                /* background-position: center; */
+
+                position:absolute;
+            }
+            .carRace {
+                width: 400px;
+                height: 100vh;
+                background-color: #2f3640;
+                margin: auto;
+                position: relative;
+                border-right: 5px dashed red;
+                border-left: 5px dashed red;
+            }
+            .lines{
+                width:10px;
+                height: 100px;
+                background-color:yellow;
+                margin-left: 195px;
+                position:absolute;
+            }
+            .score{
+                position: absolute;
+                top:15px;
+                left: 15px;
+                width: 150px;
+                height: 50px;
+                font-size: 20px;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                box-shadow: 5px 5px rgb(126, 245, 179);
+                background-color: rgb(30, 212, 182);
+            }
+            .InstructionBoard{
+                position: absolute;
+                width: 650px;
+                height: 100px;
+                top: 50%;
+                left: 30%;
+                text-align: center;
+                font-size: 30px;
+                padding: 5px;
+                border: 2px solid red;
+                cursor: pointer;
+                background-color: rgb(238, 187, 92);
+                margin: auto;
+
+            }
+            
+               
+        </style>
+        <div class="gameArea">
+            <div class="score">
+            </div>
+            <div class="carRace ">
+                
+            </div>
+            <div class="InstructionBoard">
+                <p>press here to start the game <br>
+                    move arrow keys to move around <br>
+
+                </p>
+            </div>
+        </div>
+        <script>
+            const gameArea=document.querySelector(".gameArea")
+            const score=document.querySelector(".score")
+            const carRace=document.querySelector(".carRace")
+            const instructionBoard=document.querySelector(".InstructionBoard")
+            console.log(score)
+            let keys={ArrowUp:false,ArrowDown:false,ArrowRight:false,ArrowLeft:false}
+            let player={speed:5,score:0}
+            document.addEventListener('keydown',keyDown)
+            document.addEventListener('keyup',keyUp)
+            function keyDown(e){
+                // console.log(e.key)
+                keys[e.key]=true
+            }
+            function keyUp(e){
+                // console.log(e.key)
+                keys[e.key]=false
+            }
+            instructionBoard.addEventListener('click',start)
+            function isCollide(a,b){
+                let aRect=a.getBoundingClientRect()
+                let bRect=b.getBoundingClientRect()
+                return !((aRect.bottom<bRect.top) || (aRect.top>bRect.bottom) || (aRect.right<bRect.left) ||(aRect.left>bRect.right))
+            }
+            function moveLines(){
+                let lines=document.querySelectorAll(".lines")
+                lines.forEach(function(item){
+                    if(item.y>600){
+                        item.y-=600
+                    }
+                    item.y+=player.speed
+                    item.style.top=item.y+"px"
+                })
+            }
+            function endGame(){
+                player.start=false
+                instructionBoard.classList.remove("hide")
+                instructionBoard.innerHTML="Game Over <br> Your final score is   "+player.score+"<br> Press here to restart again"
+            }
+            function moveEnemy(car){
+                let enemy=document.querySelectorAll(".enemyCar")
+               enemy.forEach(function(item){
+                   if (isCollide(car,item)){
+                       console.log(car.getBoundingClientRect())
+                       console.log(item.getBoundingClientRect())
+                       console.log("hit the car")
+                    //    player.start=false
+                        endGame()
+                   }
+                    if(item.y>600){
+                        item.y=-300
+                        item.style.left=Math.floor(Math.random()*320)+'px'
+                    }
+                    item.y+=player.speed
+                    item.style.top=item.y+"px"
+                })
+            }
+            function gamePlay(){
+                // console.log('hey I am clicked')
+                let car=document.querySelector(".carDesign")
+                let react=carRace.getBoundingClientRect()
+                // console.log(react)
+                player.x=car.offsetLeft
+                player.y=car.offsetTop
+                // console.log(player.x)
+                // console.log(player.y)
+                if(player.start){
+                    moveLines()
+                    moveEnemy(car)
+                    if(keys.ArrowUp && player.y>50 ){player.y-=player.speed}
+                    if(keys.ArrowDown && player.y<(react.height-60)){player.y+=player.speed}
+                    if(keys.ArrowLeft && player.x>0){player.x-=player.speed}
+                    if(keys.ArrowRight && player.x < (react.width-70)){player.x+=player.speed}
+                    car.style.top=player.y+"px"
+                    car.style.left=player.x+"px"
+                    window.requestAnimationFrame(gamePlay)
+                    score.innerHTML="Score:"+player.score++
+                    
+                }
+            }
+            function start(){
+                player.start=true
+                player.score=0
+                // carRace.classList.remove("hide")
+                carRace.innerHTML=''
+                instructionBoard.classList.add("hide")
+                window.requestAnimationFrame(gamePlay);
+                z=0
+                for(let x=0;x<5;x++){
+                    let road=document.createElement("div")
+                    road.setAttribute("class","lines")
+                    road.y=z
+                    road.style.top=road.y+'px'
+                    z+=150
+                    carRace.appendChild(road)
+                }
+                for(let x=0;x<3;x++){
+                    let enemyCar=document.createElement("div")
+                    enemyCar.setAttribute("class","enemyCar")
+                    enemyCar.y=-1*((x+1)*350)
+                    enemyCar.style.top=enemyCar+'px'
+                    enemyCar.style.backgroundColor=randomColor()
+                    enemyCar.style.left=Math.floor(Math.random()*320)+'px'
+                    carRace.appendChild(enemyCar)
+                }
+                
+                let car=document.createElement('div')
+                car.setAttribute('class','carDesign')
+                // car.innerText='I here to win'
+                carRace.appendChild(car)
+                // console.log("Top",car.offsetTop)
+                // console.log('Left',car.offsetLeft)
+            }
+            function randomColor(){
+                function c(){
+                    let hex =Math.floor(Math.random()*256).toString(16)
+                    return("0"+String(hex)).substr(-2)
+                }
+                return "#"+c()+c()+c();
+            }
+            
+        </script>
+    </body>
+</html>
