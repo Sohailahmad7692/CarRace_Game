@@ -9,7 +9,7 @@
         <style>
             *{margin: 0;padding: 0;}
             .gameArea{
-                background: url('./playground.jpg');
+                background: url('./image8.jpg');
                 background-attachment: fixed;
                 background-size: cover;
                 background-repeat: no-repeat;
@@ -21,10 +21,10 @@
             .carDesign{
                 height: 50px;
                 width: 70px;
-                top: 200px;
+                top: 500px;
                 left: 40px;
                 background-color: red;
-                background: url('./car7.png');
+                background: url('./car14.jpg');
                 background-repeat: no-repeat;
                 background-size: cover;
                 /* background-attachment: fixed; */
@@ -156,7 +156,7 @@
                     //    player.start=false
                         endGame()
                    }
-                    if(item.y>600){
+                    if(item.y>630){
                         item.y=-300
                         item.style.left=Math.floor(Math.random()*320)+'px'
                     }
@@ -184,6 +184,9 @@
                     car.style.left=player.x+"px"
                     window.requestAnimationFrame(gamePlay)
                     score.innerHTML="Score:"+player.score++
+                    if((player.score=100 ) && !(player.score>100) && !(player.score<100)){
+                        player.speed=6
+                    } 
                     
                 }
             }
@@ -208,7 +211,7 @@
                     enemyCar.setAttribute("class","enemyCar")
                     enemyCar.y=-1*((x+1)*350)
                     enemyCar.style.top=enemyCar+'px'
-                    enemyCar.style.backgroundColor=randomColor()
+                    // enemyCar.style.backgroundColor=randomColor()
                     enemyCar.style.left=Math.floor(Math.random()*320)+'px'
                     carRace.appendChild(enemyCar)
                 }
@@ -220,13 +223,7 @@
                 // console.log("Top",car.offsetTop)
                 // console.log('Left',car.offsetLeft)
             }
-            function randomColor(){
-                function c(){
-                    let hex =Math.floor(Math.random()*256).toString(16)
-                    return("0"+String(hex)).substr(-2)
-                }
-                return "#"+c()+c()+c();
-            }
+           
             
         </script>
     </body>
