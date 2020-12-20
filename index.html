@@ -183,11 +183,7 @@
                     car.style.top=player.y+"px"
                     car.style.left=player.x+"px"
                     window.requestAnimationFrame(gamePlay)
-                    score.innerHTML="Score:"+player.score++
-                    if((player.score=100 ) && !(player.score>100) && !(player.score<100)){
-                        player.speed=6
-                    } 
-                    
+                    score.innerHTML="Score:"+player.score++ 
                 }
             }
             function start(){
