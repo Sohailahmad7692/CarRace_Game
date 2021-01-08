@@ -4,6 +4,7 @@
         <title>
             CarClash
         </title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body>
         <style>
@@ -19,13 +20,13 @@
                 display: none;
             }
             .carDesign{
-                height: 50px;
-                width: 70px;
+                /* height: 50px; */
+                /* width: 70px; */
                 top: 500px;
                 left: 40px;
-                background-color: red;
-                background: url('./car14.jpg');
-                background-repeat: no-repeat;
+                /* background-color: red; */
+                /* background: url('./car15.png'); */
+                /* background-repeat: no-repeat; */
                 background-size: cover;
                 /* background-attachment: fixed; */
                 /* background-position: center; */
@@ -214,6 +215,8 @@
                 
                 let car=document.createElement('div')
                 car.setAttribute('class','carDesign')
+                car.innerHTML="<i class='fa fa-car fa-3x' aria-hidden='true' style='color: rgb(0, 0, 0);'></i>"
+                // document.querySelector(".carDesign").innerHTML="<i class='fas fa-car'></i>"
                 // car.innerText='I here to win'
                 carRace.appendChild(car)
                 // console.log("Top",car.offsetTop)
